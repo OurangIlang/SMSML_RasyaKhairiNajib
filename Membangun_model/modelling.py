@@ -10,8 +10,10 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from pathlib import Path
 
-mlflow.set_tracking_uri("file:./mlruns")
+BASE_DIR = Path(__file__).parent
+mlflow.set_tracking_uri(f"file:{BASE_DIR}/mlruns")
 mlflow.set_experiment("medical_insurance_regression")
 
 
@@ -86,7 +88,7 @@ def train():
         mlflow.sklearn.log_model(
             sk_model=model,
             artifact_path="model",
-            input_example=X_test.iloc[:5],
+            registered_model_name=None
         )
 
 

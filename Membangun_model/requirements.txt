@@ -1,9 +1,10 @@
 fastapi
-uvicorn
-mlflow
-scikit-learn
+uvicorn[standard]
+mlflow==2.19.0
 pandas
 numpy
-prometheus-fastapi-instrumentator
+scikit-learn
+pydantic
 prometheus-client
+prometheus-fastapi-instrumentator
 psutil

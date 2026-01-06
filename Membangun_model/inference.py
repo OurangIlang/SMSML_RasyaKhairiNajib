@@ -1,14 +1,22 @@
 import mlflow
-import mlflow.sklearn
-from pathlib import Path
 import pandas as pd
+import numpy as np
 
-BASE_DIR = Path(__file__).parent
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
-MODEL_PATH = BASE_DIR / "mlruns" / "725492521526629918" / "models" / "m-583354fbd226428db6db0ce98f64119b" / "artifacts"
+MODEL_URI = "models:/medical_insurance_model@production"
+model = mlflow.pyfunc.load_model(MODEL_URI)
 
-model = mlflow.sklearn.load_model(str(MODEL_PATH))
+sample = pd.DataFrame([{
+    "age": 35,
+    "sex": "male",
+    "bmi": 27.5,
+    "children": 2,
+    "smoker": "no",
+    "region": "southeast"
+}])
 
-def predict(data_dict):
-    df = pd.DataFrame([data_dict])
-    return model.predict(df)
+pred_log = model.predict(sample)
+pred_real = np.expm1(pred_log)
+
+print("Prediction:", float(pred_real[0]))
